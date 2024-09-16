@@ -4,31 +4,26 @@ import { toast } from 'react-toastify'
 
 import { api } from '@/services/api'
 
-interface Props {
-  typePokemon: string | undefined
-}
-
-export interface Pokemon {
+export interface TypePokemon {
   name: string
   url: string
 }
 
-interface TypeResponse {
-  pokemon: Pokemon[]
+interface TypePokemonResponse {
+  results: TypePokemon[]
 }
 
-async function get(typePokemon: Props['typePokemon']) {
-  const { data } = await api.get<TypeResponse>(`/type/${typePokemon}`)
+async function get() {
+  const { data } = await api.get<TypePokemonResponse>('/type')
 
   return data
 }
 
-export function useGetPokemon({ typePokemon }: Props) {
+export function useGetTypes() {
   const query = useQuery({
-    queryKey: ['get-pokemon', typePokemon],
-    queryFn: () => get(typePokemon),
-    select: (response) => response.pokemon,
-    enabled: !!typePokemon,
+    queryKey: ['get-types'],
+    queryFn: get,
+    select: (response) => response.results,
   })
 
   const { isError } = query
