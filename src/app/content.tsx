@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 
 import { useModal } from '@/hooks/use-modal'
 
-import { useGetPokemon } from './hooks/use-get-pokemon'
+import { Pokemon, useGetPokemon } from './hooks/use-get-pokemon'
 import { TypePokemon, useGetTypes } from './hooks/use-get-types'
 
 const { Content } = Layout
@@ -12,7 +12,7 @@ const { Content } = Layout
 interface TablePokemon {
   key: string
   type: string | undefined
-  name: string
+  pokemon: Pokemon
 }
 
 export function ContentComponent() {

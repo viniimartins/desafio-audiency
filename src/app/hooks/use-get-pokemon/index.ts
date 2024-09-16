@@ -13,8 +13,13 @@ export interface Pokemon {
   url: string
 }
 
+interface PokemonSlot {
+  slot: number
+  pokemon: Pokemon
+}
+
 interface TypeResponse {
-  pokemon: Pokemon[]
+  pokemon: PokemonSlot[]
 }
 
 async function get(typePokemon: Props['typePokemon']) {
