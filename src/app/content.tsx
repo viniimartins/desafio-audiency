@@ -10,7 +10,7 @@ const { Content } = Layout
 interface TablePokemon {
   key: string
   type: string | undefined
-  pokemon: Pokemon
+  name: string
 }
 
 export function ContentComponent() {
@@ -28,7 +28,7 @@ export function ContentComponent() {
     pokemons?.map((pokemon, index) => ({
       key: index.toString(),
       type: typePokemonSelected,
-      pokemon,
+      ...pokemon,
     })) || []
 
   const columns = [
