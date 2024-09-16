@@ -26,6 +26,7 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "14.2.11",
     "eslint-plugin-simple-import-sort": "^12.1.1",
+    "git-commit-msg-linter": "^5.0.8",
     "postcss": "^8",
     "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.6",

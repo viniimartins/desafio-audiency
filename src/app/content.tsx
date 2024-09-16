@@ -1,135 +1,37 @@
 'use client'
 import { Layout, Select, Table } from 'antd'
 
+import { useGetPokemon } from './hooks/use-get-pokemon'
+
 const { Content } = Layout
 
 export function ContentComponent() {
-  const dataSource = [
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-    {
-      key: '1',
-      name: 'Mike',
-      age: 32,
-      address: '10 Downing Street',
-    },
-    {
-      key: '2',
-      name: 'John',
-      age: 42,
-      address: '10 Downing Street',
-    },
-  ]
+  const { data: pokemons, isFetching } = useGetPokemon()
 
   const columns = [
     {
       title: 'Name',
-      dataIndex: 'name',
+      dataIndex: ['pokemon', 'name'],
       key: 'name',
-    },
-    {
-      title: 'Age',
-      dataIndex: 'age',
-      key: 'age',
-    },
-    {
-      title: 'Address',
-      dataIndex: 'address',
-      key: 'address',
     },
   ]
 
   return (
-    <Content className="mx-auto w-full max-w-7xl space-y-4 p-10">
+    <Content className="mx-auto h-[calc(100vh-4rem)] w-full max-w-7xl space-y-4 p-10">
       <div className="flex w-full justify-end">
         <Select placeholder="Escolha seu pokemon">
           <Select.Option value="sample">Sample</Select.Option>
         </Select>
       </div>
-      <Table dataSource={dataSource} columns={columns} />
+      <div className="overflow-x-auto">
+        <Table
+          dataSource={pokemons}
+          columns={columns}
+          loading={isFetching}
+          scroll={{ x: 'max-content', y: 600 }}
+          rowKey={(record) => record.name}
+        />
+      </div>
     </Content>
   )
 }
