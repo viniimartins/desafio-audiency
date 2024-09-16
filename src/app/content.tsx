@@ -1,8 +1,10 @@
 'use client'
-import { Layout, Select, Table } from 'antd'
-import { useState } from 'react'
+import { Button, Layout, Modal, Select, Table } from 'antd'
+import { useEffect, useState } from 'react'
 
-import { Pokemon, useGetPokemon } from './hooks/use-get-pokemon'
+import { useModal } from '@/hooks/use-modal'
+
+import { useGetPokemon } from './hooks/use-get-pokemon'
 import { TypePokemon, useGetTypes } from './hooks/use-get-types'
 
 const { Content } = Layout
@@ -14,6 +16,8 @@ interface TablePokemon {
 }
 
 export function ContentComponent() {
+  const { actions, isOpen } = useModal()
+
   const [typePokemonSelected, setTypePokemonSelected] =
     useState<TypePokemon['name']>()
 
@@ -37,27 +41,53 @@ export function ContentComponent() {
       dataIndex: ['pokemon', 'name'],
       key: 'name',
       width: 155,
-      render: (text: Pokemon['name']) =>
-        text.charAt(0).toUpperCase() + text.slice(1),
     },
     {
       title: 'Tipo',
       dataIndex: 'type',
       key: 'type',
       width: 150,
-      render: (text: TypePokemon['name']) =>
-        text.charAt(0).toUpperCase() + text.slice(1),
     },
   ]
 
+  const handleSelectTypeChange = (value: TypePokemon['name']) => {
+    setTypePokemonSelected(value)
+    actions.close()
+  }
+
+  useEffect(() => {
+    actions.open()
+  }, [])
+
   return (
-    <Content className="mx-auto h-[calc(100vh-4rem)] w-full max-w-7xl space-y-4 p-10">
-      <div className="flex w-full justify-end">
+    <>
+      <Content className="mx-auto h-[calc(100vh-4rem)] w-full max-w-7xl space-y-4 p-10">
+        <div className="flex w-full justify-end">
+          <Button onClick={actions.open}>Filtro</Button>
+        </div>
+        <div className="overflow-x-auto">
+          <Table
+            dataSource={dataSource}
+            columns={columns}
+            loading={isFetchingPokemons}
+            rootClassName="capitalize"
+            scroll={{ x: 600, y: 600 }}
+          />
+        </div>
+      </Content>
+
+      <Modal
+        title="Categoria do Pokémon"
+        open={isOpen}
+        onCancel={actions.close}
+        footer={false}
+      >
         <Select
           placeholder="Escolha a categoria"
           className="w-full"
-          onChange={setTypePokemonSelected}
+          onChange={handleSelectTypeChange}
           loading={isFetchingTypesPokemons}
+          rootClassName="capitalize"
         >
           {typesPokemons?.map((types, index) => {
             const { name } = types
@@ -69,15 +99,7 @@ export function ContentComponent() {
             )
           })}
         </Select>
-      </div>
-      <div className="overflow-x-auto">
-        <Table
-          dataSource={dataSource}
-          columns={columns}
-          loading={isFetchingPokemons}
-          scroll={{ x: 600, y: 600 }}
-        />
-      </div>
-    </Content>
+      </Modal>
+    </>
   )
 }
